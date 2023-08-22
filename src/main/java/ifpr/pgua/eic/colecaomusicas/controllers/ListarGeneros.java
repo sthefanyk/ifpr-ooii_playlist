@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import ifpr.pgua.eic.colecaomusicas.App;
+import ifpr.pgua.eic.colecaomusicas.controllers.viewmodel.ListarGenerosViewModel;
+import ifpr.pgua.eic.colecaomusicas.controllers.viewmodel.RowGenero;
 import ifpr.pgua.eic.colecaomusicas.models.Genero;
 import ifpr.pgua.eic.colecaomusicas.models.Repositorio;
 import javafx.event.ActionEvent;
@@ -17,10 +19,10 @@ public class ListarGeneros implements Initializable{
     @FXML
     private ListView<Genero> lstGeneros;
 
-    private Repositorio repositorio;
+    private ListarGenerosViewModel viewmodel;
 
-    public ListarGeneros(Repositorio repositorio){
-        this.repositorio = repositorio;
+    public ListarGeneros(ListarGenerosViewModel viewmodel){
+        this.viewmodel = viewmodel;
     }
 
     @FXML
@@ -31,7 +33,7 @@ public class ListarGeneros implements Initializable{
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         lstGeneros.getItems().clear();
-        List<Genero> lista = repositorio.listarGeneros();
+        List<Genero> lista = viewmodel.getGeneros();
 
         if(lista != null){
             lstGeneros.getItems().addAll(lista);

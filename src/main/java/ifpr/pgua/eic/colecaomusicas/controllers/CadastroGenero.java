@@ -1,13 +1,18 @@
 package ifpr.pgua.eic.colecaomusicas.controllers;
 
-import ifpr.pgua.eic.colecaomusicas.models.Repositorio;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import ifpr.pgua.eic.colecaomusicas.App;
+import ifpr.pgua.eic.colecaomusicas.controllers.viewmodel.CadastroGeneroViewModel;
+import ifpr.pgua.eic.colecaomusicas.models.results.Result;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 
-public class CadastroGenero {
+public class CadastroGenero extends BaseController implements Initializable{
 
     @FXML
     private TextField tfId;
@@ -15,26 +20,31 @@ public class CadastroGenero {
     @FXML
     private TextField tfNome;
 
-    private Repositorio repositorio;
+    private CadastroGeneroViewModel viewmodel;
 
-    public CadastroGenero(Repositorio repositorio){
-        this.repositorio = repositorio;
+    public CadastroGenero(CadastroGeneroViewModel viewmodel){
+        this.viewmodel = viewmodel;
     }
 
     @FXML
     void cadastrar(ActionEvent event) {
-        String nome = tfNome.getText();
-
-        String msg = repositorio.cadastrarGenero(nome);
-
-        Alert alert = new Alert(AlertType.INFORMATION,msg);
-        alert.showAndWait();
-
+        viewmodel.inserir();
     }
 
     @FXML
     void cancelar(ActionEvent event) {
+        App.popScreen();
+    }
 
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        tfNome.textProperty().bindBidirectional(viewmodel.getNomeProperty());
+
+        viewmodel.getAlertProperty().addListener((ChangeListener<Result>) (observable, oldVal, newVal) -> {
+            showMessage(newVal);
+        });
+
+        viewmodel.limpar();
     }
 
 }

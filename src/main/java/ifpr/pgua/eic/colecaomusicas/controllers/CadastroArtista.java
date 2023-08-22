@@ -1,14 +1,18 @@
 package ifpr.pgua.eic.colecaomusicas.controllers;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import ifpr.pgua.eic.colecaomusicas.App;
-import ifpr.pgua.eic.colecaomusicas.models.Repositorio;
+import ifpr.pgua.eic.colecaomusicas.controllers.viewmodel.CadastroArtistaViewModel;
+import ifpr.pgua.eic.colecaomusicas.models.results.Result;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 
-public class CadastroArtista {
+public class CadastroArtista extends BaseController implements Initializable{
 
     @FXML
     private TextField tfContato;
@@ -16,27 +20,37 @@ public class CadastroArtista {
     @FXML
     private TextField tfNome;
 
-    private Repositorio repositorio;
+    private CadastroArtistaViewModel viewmodel;
 
-    public CadastroArtista(Repositorio repositorio){
-        this.repositorio = repositorio;
+    public CadastroArtista(CadastroArtistaViewModel viewmodel){
+        this.viewmodel = viewmodel;
     }
-
 
     @FXML
     void cadastrar(ActionEvent event) {
-        String nome = tfNome.getText();
-        String contato = tfContato.getText();
-
-        String msg = repositorio.cadastrarArtista(nome, contato);
-
-        Alert alert = new Alert(AlertType.INFORMATION,msg);
-        alert.showAndWait();
+        viewmodel.inserir();
     }
 
     @FXML
     void cancelar(ActionEvent event) {
         App.popScreen();
+    }
+
+    // @FXML
+    // private void voltar(){
+    //     App.popScreen();
+    // }
+
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        tfNome.textProperty().bindBidirectional(viewmodel.getNomeProperty());
+        tfContato.textProperty().bindBidirectional(viewmodel.getContatoProperty());
+
+        viewmodel.getAlertProperty().addListener((ChangeListener<Result>) (observable, oldVal, newVal) -> {
+            showMessage(newVal);
+        });
+
+        viewmodel.limpar();
     }
 
 }
