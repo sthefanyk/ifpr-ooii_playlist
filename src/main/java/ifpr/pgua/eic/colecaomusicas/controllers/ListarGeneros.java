@@ -6,9 +6,7 @@ import java.util.ResourceBundle;
 
 import ifpr.pgua.eic.colecaomusicas.App;
 import ifpr.pgua.eic.colecaomusicas.controllers.viewmodel.ListarGenerosViewModel;
-import ifpr.pgua.eic.colecaomusicas.controllers.viewmodel.RowGenero;
 import ifpr.pgua.eic.colecaomusicas.models.Genero;
-import ifpr.pgua.eic.colecaomusicas.models.Repositorio;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
